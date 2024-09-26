@@ -1,0 +1,141 @@
+/* 2-Escreva um programa em C que gere números aleatórios para uma matriz quadrada de ordem 9. O
+programa deve conter um menu com as seguintes opções:
+a. Gerar elementos para a matriz
+b. Apresentar os elementos da matriz
+c. Apresentar a média dos valores de uma linha (informada pelo usuário)
+d. Apresentar a média dos valores de uma coluna (informada pelo usuário)
+e. Apresentar a média dos valores da diagonal principal
+f. Apresentar a média dos valores abaixo da diagonal principal
+g. Apresentar a média dos valores acima da diagonal principal
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define SIZE 9
+
+void gerar_matriz(int matriz[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            matriz[i][j] = rand() % 100; // Números aleatórios de 0 a 99
+        }
+    }
+}
+
+void apresentar_matriz(int matriz[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            printf("%2d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+float media_linha(int matriz[SIZE][SIZE], int linha) {
+    float soma = 0;
+    for (int j = 0; j < SIZE; j++) {
+        soma += matriz[linha][j];
+    }
+    return soma / SIZE;
+}
+float media_coluna(int matriz[SIZE][SIZE], int coluna) {
+    float soma = 0;
+    for (int i = 0; i < SIZE; i++) {
+        soma += matriz[i][coluna];
+    }
+    return soma / SIZE;
+}
+
+float media_diagonal_principal(int matriz[SIZE][SIZE]) {
+    float soma = 0;
+    for (int i = 0; i < SIZE; i++) {
+        soma += matriz[i][i];
+    }
+    return soma / SIZE;
+}
+
+float media_acima_diagonal_principal(int matriz[SIZE][SIZE]) {
+    float soma = 0;
+    int count = 0;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = i + 1; j < SIZE; j++) {
+            soma += matriz[i][j];
+            count++;
+        }
+    }
+    return count > 0 ? soma / count : 0;
+}
+
+float media_abaixo_diagonal_principal(int matriz[SIZE][SIZE]) {
+    float soma = 0;
+    int count = 0;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < i; j++) {
+            soma += matriz[i][j];
+            count++;
+        }
+    }
+    return count > 0 ? soma / count : 0;
+}
+
+
+int main(){
+    int matriz[SIZE][SIZE];
+    char opcao;
+    srand(time(NULL));
+    while(1){
+    printf("selecione uma opcao : \n"
+        "a. Gerar elementos para a matriz\n"
+        "b. Apresentar os elementos da matriz\n"
+        "c. Apresentar a média dos valores de uma linha \n"
+        "d. Apresentar a média dos valores de uma coluna \n"
+        "e. Apresentar a média dos valores da diagonal principal\n"
+        "f. Apresentar a média dos valores abaixo da diagonal principal\n"
+        "g. Apresentar a média dos valores acima da diagonal principal\n"
+    );
+    scanf(" %c", &opcao);
+
+    switch (opcao) {
+            case 'a':
+                gerar_matriz(matriz);
+                printf("Matriz gerada com sucesso!\n");
+                break;
+            case 'b':
+                apresentar_matriz(matriz);
+                break;
+            case 'c': {
+                int linha;
+                printf("Informe o número da linha (0 a 8): ");
+                scanf("%d", &linha);
+                if (linha >= 0 && linha < SIZE) {
+                    printf("Media da linha %d: %.2f\n", linha, media_linha(matriz, linha));
+                } else {
+                    printf("Linha inválida!\n");
+                }
+                break;
+            }
+            case 'd': {
+                int coluna;
+                printf("Informe o número da coluna (0 a 8): ");
+                scanf("%d", &coluna);
+                if (coluna >= 0 && coluna < SIZE) {
+                    printf("Media da coluna %d: %.2f\n", coluna, media_coluna(matriz, coluna));
+                } else {
+                    printf("Coluna inválida!\n");
+                }
+                break;
+            }
+            case 'e':
+                printf("Media da diagonal principal: %.2f\n", media_diagonal_principal(matriz));
+                break;
+            case 'f':
+                printf("Media abaixo da diagonal principal: %.2f\n", media_abaixo_diagonal_principal(matriz));
+                break;
+            case 'g':
+                printf("Media acima da diagonal principal: %.2f\n", media_acima_diagonal_principal(matriz));
+                break;
+                return 0;
+            default:
+                printf("Opcao inválida! \n");
+        }
+    }
+}
