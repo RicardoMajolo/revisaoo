@@ -16,7 +16,7 @@ g. Apresentar a média dos valores acima da diagonal principal
 void gerar_matriz(int matriz[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            matriz[i][j] = rand() % 100; // Números aleatórios de 0 a 99
+            matriz[i][j] = rand() % 100; 
         }
     }
 }
