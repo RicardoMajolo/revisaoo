@@ -1,0 +1,63 @@
+/*4- A prefeitura de uma pequena cidade do interior contratou você para desenvolver um software para
+armazenar e processar alguns dados de amostra de uma consulta municipal. O programa deve registrar os
+seguintes dados para 200 famílias:
+• Renda familiar
+• Número de filhos
+• Número de animais de estimação
+Escreva um programa em C que contenha uma matriz de tamanho 200 x 3 para armazenar os dados
+descritos acima, onde a primeira coluna representa a renda familiar, a segunda coluna representa o número
+de filhos e a terceira coluna representa o número de animais de estimação. Para fins de teste, estes dados
+devem ser gerados de forma aleatória, onde:
+• O salário deve variar entre R$ 500 e R$ 20.000;
+• O número de filhos deve variar entre 0 e 12;
+• O número de animais de estimação deve variar entre 0 a 5.
+O programa deve conter um menu de opções para apresentar os seguintes dados:
+a. A média de salário da população;
+b. A maior e a menor renda familiar e a quais famílias respectivamente pertencem;
+c. O percentual de famílias com salário menor de R$ 2.000,00;
+d. A média de número de filhos;
+e. A média de número de animais de estimação.*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define FAMILIAS 200
+
+void gerarDados(int dados[FAMILIAS][3]) {
+    for (int i = 0; i < FAMILIAS; i++) {
+        dados[i][0] = rand() % 19501 + 500; 
+        dados[i][1] = rand() % 13;         
+        dados[i][2] = rand() % 6;           
+    }
+}
+
+void calcularEstatisticas(int dados[FAMILIAS][3]) {
+    int menorRenda = dados[0][0], maiorRenda = dados[0][0], totalFilhos = 0, totalAnimais = 0;
+    int familiasBaixaRenda = 0;
+
+    for (int i = 0; i < FAMILIAS; i++) {
+        int renda = dados[i][0];
+        totalFilhos += dados[i][1];
+        totalAnimais += dados[i][2];
+
+        if (renda < 2000) familiasBaixaRenda++;
+        if (renda < menorRenda) menorRenda = renda;
+        if (renda > maiorRenda) maiorRenda = renda;
+    }
+
+    printf("Média de salário: %.2f\n", (float)(totalFilhos + totalAnimais) / FAMILIAS);
+    printf("Maior renda: R$ %d\n", maiorRenda);
+    printf("Menor renda: R$ %d\n", menorRenda);
+    printf("Percentual de famílias com salário < R$ 2000: %.2f%%\n", (float)familiasBaixaRenda / FAMILIAS * 100);
+    printf("Média de número de filhos: %.2f\n", (float)totalFilhos / FAMILIAS);
+    printf("Média de número de animais: %.2f\n", (float)totalAnimais / FAMILIAS);
+}
+
+int main() {
+    srand(time(NULL));
+    int dados[FAMILIAS][3];
+    gerarDados(dados);
+    calcularEstatisticas(dados);
+    return 0;
+}
